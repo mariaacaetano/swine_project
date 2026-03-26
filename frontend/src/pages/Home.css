@@ -2,6 +2,26 @@
   background-color: #F0F0D8;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── ANIMAÇÃO DE SCROLL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* delay para os cards entrarem em sequência */
+.reveal:nth-child(2) { transition-delay: 0.15s; }
+.reveal:nth-child(3) { transition-delay: 0.30s; }
+
 /* ── TAGLINE ── */
 .home-tagline {
   text-align: center;

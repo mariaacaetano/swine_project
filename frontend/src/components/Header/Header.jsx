@@ -1,8 +1,18 @@
 import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import "./Header.css"
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const navigate = useNavigate()
+
+  const handleServicos = (e) => {
+    e.preventDefault()
+    navigate("/")
+    setTimeout(() => {
+      document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" })
+    }, 100) // pequeno delay para a página carregar antes de scrollar
+  }
 
   return (
     <header className="header">
@@ -13,9 +23,9 @@ function Header() {
         </div>
 
         <div className="navbar-items">
-          <a href="#">home</a>
-          <a href="#">serviços</a>
-          <a href="#">sobre nós</a>
+          <Link to="/">home</Link>
+          <a href="#servicos" onClick={handleServicos}>serviços</a>
+          <Link to="/sobre">sobre nós</Link>
         </div>
 
         <div className="navbar-login">
@@ -23,7 +33,6 @@ function Header() {
           <div className="user-icon">👤</div>
         </div>
 
-        {/* Botão hamburguer — só aparece no mobile */}
         <button
           className="hamburger"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -36,11 +45,10 @@ function Header() {
 
       </nav>
 
-      {/* Menu mobile expandido */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <a href="#" onClick={() => setMenuOpen(false)}>home</a>
-        <a href="#" onClick={() => setMenuOpen(false)}>serviços</a>
-        <a href="#" onClick={() => setMenuOpen(false)}>sobre nós</a>
+        <Link to="/" onClick={() => setMenuOpen(false)}>home</Link>
+        <a href="#servicos" onClick={(e) => { handleServicos(e); setMenuOpen(false) }}>serviços</a>
+        <Link to="/sobre" onClick={() => setMenuOpen(false)}>sobre nós</Link>
         <a href="#" onClick={() => setMenuOpen(false)}>Faça seu login</a>
       </div>
 
