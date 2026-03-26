@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
 import "./Home.css"
 
 function Home() {
@@ -55,7 +56,7 @@ function Home() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
-              <a href="#">Acesse</a>
+              <Link to="/bulario">Acesse</Link>
             </div>
           </div>
 
@@ -79,7 +80,7 @@ function Home() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
-              <a href="#">Acesse</a>
+              <Link to="/compass">Acesse</Link>
             </div>
           </div>
 

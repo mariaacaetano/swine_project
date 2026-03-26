@@ -61,7 +61,7 @@ function Header() {
       </div>
 
       <div className="hero">
-        <h1 className="title">SWINE</h1>
+        <h1 className="title">S W I N E</h1>
         <img className="hero-pig" src="/swine_header.png" alt="porco" />
         <h1 className="title">DATAMED</h1>
       </div>
