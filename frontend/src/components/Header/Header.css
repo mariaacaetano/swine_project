@@ -19,20 +19,20 @@
 }
 
 .navbar-logo img {
-  width: 80px;
+  width: 120px;
 }
 
 .navbar-items {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 100px;
 }
 
 .navbar-items a,
 .navbar-login a {
   color: white;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 25px;
   transition: opacity 0.2s;
 }
 
@@ -49,6 +49,14 @@
 
 .user-icon {
   font-size: 20px;
+}
+
+.user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 /* ── HAMBURGUER ── */

@@ -38,7 +38,7 @@ function Header() {
 
         <div className="navbar-login">
           <a href="#">Faça seu login</a>
-          <div className="user-icon">👤</div>
+          <img src="/profile_default.jpg" alt="perfil" className="user-icon" />
         </div>
 
         <button
