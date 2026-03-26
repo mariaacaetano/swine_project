@@ -11,7 +11,15 @@ function Header() {
     navigate("/")
     setTimeout(() => {
       document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" })
-    }, 100) // pequeno delay para a página carregar antes de scrollar
+    }, 100)
+  }
+
+  const handleHome = (e) => {
+    e.preventDefault()
+    navigate("/")
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }, 100)
   }
 
   return (
@@ -23,7 +31,7 @@ function Header() {
         </div>
 
         <div className="navbar-items">
-          <Link to="/">home</Link>
+          <a href="/" onClick={handleHome}>home</a>
           <a href="#servicos" onClick={handleServicos}>serviços</a>
           <Link to="/sobre">sobre nós</Link>
         </div>
@@ -46,7 +54,7 @@ function Header() {
       </nav>
 
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <Link to="/" onClick={() => setMenuOpen(false)}>home</Link>
+        <a href="/" onClick={(e) => { handleHome(e); setMenuOpen(false) }}>home</a>
         <a href="#servicos" onClick={(e) => { handleServicos(e); setMenuOpen(false) }}>serviços</a>
         <Link to="/sobre" onClick={() => setMenuOpen(false)}>sobre nós</Link>
         <a href="#" onClick={() => setMenuOpen(false)}>Faça seu login</a>
