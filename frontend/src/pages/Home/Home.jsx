@@ -31,7 +31,7 @@ function Home() {
       <section className="home-about reveal">
         <img
           ref={aboutImgRef}
-          src="/about_pig.jpg"
+          src="/about_pig.png"
           alt="Suínos no campo"
           className="home-about-img"
         />

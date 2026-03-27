@@ -50,14 +50,16 @@
   background: #BCDDC2;
   color: #19381f;
   padding: 12px 36px;
+  border: none;
   border-radius: 30px;
   font-size: 16px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  box-shadow: 5px 5px 8px rgba(0,0,0,0.1);
 }
 
 .btn-sobre:hover {
-  background: #19381f;
+  background: #658f6d;
   color: white;
 }
 
@@ -70,11 +72,12 @@
   font-size: 16px;
   cursor: pointer;
   transition: background 0.2s;
+  box-shadow: 5px 5px 8px rgba(0,0,0,0.1);
 }
 
 .btn-comecar:hover {
-  color: white;
-  background: #63333e;
+  background: #bb7081;
+  color: #0c2010;
 }
 
 /* ── ANIMAÇÃO ── */
@@ -129,6 +132,9 @@
 
 /* ── MOBILE PEQUENO (≤ 480px) ── */
 @media (max-width: 480px) {
+  .compass {
+    min-height: 60vh;
+  }
   .compass-title {
     font-size: 26px;
   }

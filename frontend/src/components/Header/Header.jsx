@@ -21,6 +21,14 @@ function Header() {
       window.scrollTo({ top: 0, behavior: "smooth" })
     }, 100)
   }
+  
+    const handleLogin = (e) => {
+    e.preventDefault()
+    navigate("/login")
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }, 100)
+  }
 
   return (
     <header className="header">
@@ -37,7 +45,7 @@ function Header() {
         </div>
 
         <div className="navbar-login">
-          <a href="#">Faça seu login</a>
+          <a href="/login" onClick={handleLogin}>Faça seu login</a>
           <img src="/profile_default.jpg" alt="perfil" className="user-icon" />
         </div>
 

@@ -145,11 +145,13 @@ html {
   font-size: 14px;
   align-self: flex-start;
   transition: background-color 0.2s;
+  box-shadow: 5px 5px 8px rgba(0,0,0,0.1);
 }
 
 .service-card-body a:hover {
-  background-color: #2a5530;
-  color: white;
+  background: #bb7081;
+  color: #0c2010;
+
 }
 
 /* ── TABLET (≤ 1024px) ── */
