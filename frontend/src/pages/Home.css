@@ -18,7 +18,6 @@ html {
   transform: translateY(0);
 }
 
-/* delay para os cards entrarem em sequência */
 .reveal:nth-child(2) { transition-delay: 0.15s; }
 .reveal:nth-child(3) { transition-delay: 0.30s; }
 
@@ -39,7 +38,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 50px
+  gap: 50px;
 }
 
 .home-about-img {
@@ -49,6 +48,14 @@ html {
   object-fit: cover;
   flex-shrink: 0;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  cursor: pointer;
+  will-change: transform;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.home-about-img:hover {
+  transform: translateY(-10px) scale(1.03) !important;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.2);
 }
 
 .home-about-text {
@@ -56,6 +63,9 @@ html {
   line-height: 1.8;
   color: #333;
   max-width: 600px;
+  text-align: justify;
+  hyphens: auto;
+  lang: pt;
 }
 
 /* ── SERVIÇOS ── */
@@ -80,16 +90,27 @@ html {
 .service-card {
   background: white;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  will-change: transform;
 }
 
 .service-card img {
   width: 100%;
   height: 300px;
   object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.service-card.visible {
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.service-card.visible:hover {
+  transform: translateY(-10px) scale(1.03) !important;
 }
 
 .service-card-body {
@@ -128,6 +149,7 @@ html {
 
 .service-card-body a:hover {
   background-color: #2a5530;
+  color: white;
 }
 
 /* ── TABLET (≤ 1024px) ── */
@@ -155,17 +177,33 @@ html {
 @media (max-width: 768px) {
   .home-tagline {
     font-size: 24px;
+    padding-top: 60px;
+    padding-bottom: 40px;
   }
 
   .home-about {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 0 24px;
+  }
+
+  .home-about-text {
+    text-align: justify;
   }
 
   .home-about-img {
     width: 200px;
     height: 200px;
+  }
+
+  .home-about-img:hover {
+    transform: none !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+
+  .service-card.visible:hover {
+    transform: none !important;
   }
 
   .home-services {
