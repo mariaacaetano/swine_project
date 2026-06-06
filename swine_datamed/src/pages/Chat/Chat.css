@@ -27,7 +27,7 @@
 
 .chat-sidebar {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: 18px;
   min-height: 0;
   padding: 20px;
@@ -47,8 +47,7 @@
 }
 
 .chat-brand strong,
-.chat-brand span,
-.chat-examples span {
+.chat-brand span {
   display: block;
 }
 
@@ -56,8 +55,7 @@
   font-size: 17px;
 }
 
-.chat-brand span,
-.chat-examples span {
+.chat-brand span {
   color: rgba(244, 245, 238, 0.62);
   font-size: 17px;
   font-weight: 900;
@@ -181,24 +179,6 @@
   font-size: 17px;
   font-weight: 700;
   line-height: 1.55;
-}
-
-.chat-examples {
-  display: grid;
-  gap: 10px;
-}
-
-.chat-examples button {
-  border: 1px solid rgba(244, 245, 238, 0.12);
-  border-radius: 8px;
-  padding: 12px;
-  color: rgba(244, 245, 238, 0.78);
-  background: rgba(0, 0, 0, 0.34);
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1.4;
-  text-align: left;
-  cursor: pointer;
 }
 
 .chat-main {

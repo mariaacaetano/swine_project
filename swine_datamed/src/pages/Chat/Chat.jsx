@@ -3,13 +3,8 @@ import { Bot, Check, Clock3, Mic, Pencil, Plus, Send, ShieldCheck, Sparkles, Tra
 import { buildData, makeReply } from "../../data/swineKnowledge"
 import "./Chat.css"
 
-const examples = [
-  "Leitões na creche com diarreia aquosa, apatia e desidratação.",
-  "Suínos em terminação com tosse, febre alta e dificuldade respiratória.",
-  "Matriz gestante apresentou aborto e perda de apetite.",
-]
-
 const storageKey = "swine-datamed-chats"
+const replyDelayMs = 2000
 const initialMessage = {
   role: "assistant",
   text: "Olá, eu sou o Swine DataMed. Descreva os sintomas, fase produtiva, idade, temperatura e evolução do caso para eu organizar uma triagem assistida.",
@@ -44,6 +39,7 @@ function Chat() {
   const initialChats = useMemo(() => loadChats(), [])
   const recognitionRef = useRef(null)
   const messagesRef = useRef(null)
+  const replyTimeoutsRef = useRef([])
   const [chats, setChats] = useState(initialChats)
   const [activeChatId, setActiveChatId] = useState(initialChats[0]?.id)
   const [input, setInput] = useState("")
@@ -57,6 +53,13 @@ function Chat() {
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(chats))
   }, [chats])
+
+  useEffect(() => {
+    return () => {
+      replyTimeoutsRef.current.forEach((timeoutId) => clearTimeout(timeoutId))
+      replyTimeoutsRef.current = []
+    }
+  }, [])
 
   useEffect(() => {
     const list = messagesRef.current
@@ -77,21 +80,35 @@ function Chat() {
 
   const sendMessage = (text = input) => {
     const content = text.trim()
-    if (!content) return
+    const chatId = activeChat?.id
+    if (!content || !chatId) return
 
     updateActiveChat((chat) => {
       const shouldRename = chat.title === "Nova triagem" && chat.messages.length === 1
       return {
         ...chat,
         title: shouldRename ? titleFromMessage(content) : chat.title,
-        messages: [
-          ...chat.messages,
-          { role: "user", text: content },
-          { role: "assistant", text: makeReply(content, data) },
-        ],
+        messages: [...chat.messages, { role: "user", text: content }],
       }
     })
     setInput("")
+
+    const timeoutId = setTimeout(() => {
+      setChats((current) =>
+        current.map((chat) =>
+          chat.id === chatId
+            ? {
+                ...chat,
+                updatedAt: new Date().toISOString(),
+                messages: [...chat.messages, { role: "assistant", text: makeReply(content, data) }],
+              }
+            : chat
+        )
+      )
+      replyTimeoutsRef.current = replyTimeoutsRef.current.filter((id) => id !== timeoutId)
+    }, replyDelayMs)
+
+    replyTimeoutsRef.current.push(timeoutId)
   }
 
   const createNewChat = () => {
@@ -242,15 +259,6 @@ function Chat() {
           <div className="chat-note">
             <ShieldCheck size={20} />
             <p>As respostas organizam hipóteses e próximos passos. A decisão clínica deve ser validada por médico-veterinário.</p>
-          </div>
-
-          <div className="chat-examples">
-            <span>Exemplos</span>
-            {examples.map((example) => (
-              <button type="button" key={example} onClick={() => sendMessage(example)}>
-                {example}
-              </button>
-            ))}
           </div>
         </aside>
 
