@@ -78,10 +78,14 @@ function Sobre() {
           </div>
           <div className="about-author">
             <GraduationCap size={30} />
-            <p>
-              Maria Fernanda Caetano, graduanda de Bacharelado em Sistemas de Informação
-              pelo Instituto Federal Catarinense, Campus São Francisco do Sul.
-            </p>
+            <div>
+              <p>
+                Maria Fernanda Caetano, graduanda de Bacharelado em Sistemas de Informação
+                pelo Instituto Federal Catarinense, Campus Araquari.
+              </p>
+              <p>Maithê Alves Borba, graduanda de Bacharelado em Medicina Veterinária
+                pelo Instituto Federal Catarinense, Campus Araquari.</p>
+            </div>
           </div>
         </aside>
 

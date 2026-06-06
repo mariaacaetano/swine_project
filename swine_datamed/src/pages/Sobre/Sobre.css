@@ -176,6 +176,10 @@
   line-height: 1.6;
 }
 
+.about-author p + p {
+  margin-top: 12px;
+}
+
 .about-text {
   padding: 34px;
 }
