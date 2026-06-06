@@ -113,9 +113,9 @@
   max-width: 620px;
   margin: 34px 0 0;
   padding: 0 8px 0 20px;
-  border: 1px solid rgba(244, 245, 238, 0.2);
+  border: 1px solid rgba(244, 245, 238, 0.18);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(0, 0, 0, 0.9);
   box-shadow: 0 22px 42px rgba(0, 0, 0, 0.34);
 }
 
@@ -124,10 +124,14 @@
   flex: 1;
   border: 0;
   outline: 0;
-  color: #19381f;
+  color: #f4f5ee;
   background: transparent;
   font-size: 17px;
   font-weight: 800;
+}
+
+.package-search input::placeholder {
+  color: rgba(244, 245, 238, 0.56);
 }
 
 .package-search button {
