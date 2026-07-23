@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Doenca, Farmaco, Sintoma, Variavel
+from .models import CasoClinico, Doenca, Farmaco, GeracaoDataset, Indicacao, Sintoma, Vacina, Variavel
 
 
 @admin.register(Farmaco)
@@ -25,3 +25,9 @@ class SintomaAdmin(admin.ModelAdmin):
 @admin.register(Variavel)
 class VariavelAdmin(admin.ModelAdmin):
     search_fields = ["nome", "descricao"]
+
+
+admin.site.register(Vacina)
+admin.site.register(Indicacao)
+admin.site.register(GeracaoDataset)
+admin.site.register(CasoClinico)

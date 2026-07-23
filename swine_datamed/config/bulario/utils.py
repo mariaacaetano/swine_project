@@ -2,17 +2,23 @@ import re
 import unicodedata
 
 
-EMPTY_VALUES = {"", "-", "—", "completar"}
+EMPTY_VALUES = {"", "-", "completar", "na", "n/a", "null", "none"}
+
+
+def clean_text(value):
+    """Preserva acentos em UTF-8 e remove variações invisíveis/de formatação."""
+    text = unicodedata.normalize("NFC", str(value or ""))
+    text = text.replace("\ufeff", "").replace("\xa0", " ")
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r" *\n *", "\n", text)
+    return text.strip()
 
 
 def normalize(value):
-    return (
-        unicodedata.normalize("NFD", str(value or ""))
-        .encode("ascii", "ignore")
-        .decode("ascii")
-        .lower()
-        .strip()
-    )
+    text = unicodedata.normalize("NFKD", clean_text(value)).casefold()
+    text = "".join(char for char in text if not unicodedata.combining(char))
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def is_filled(value):
@@ -20,7 +26,7 @@ def is_filled(value):
 
 
 def split_list(value):
-    return [item.strip() for item in str(value or "").split(",") if item.strip()]
+    return [clean_text(item) for item in re.split(r"\s*[;,]\s*", str(value or "")) if is_filled(item)]
 
 
 def slugify_text(value):

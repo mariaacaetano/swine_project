@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Doenca, Farmaco, Sintoma, Variavel
+from .models import CasoClinico, Doenca, Farmaco, GeracaoDataset, Sintoma, Vacina, Variavel
 
 
 class SintomaSerializer(serializers.ModelSerializer):
@@ -14,13 +14,13 @@ class DoencaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doenca
-        fields = ["id", "nome", "tipo", "fase_comum", "sintomas_texto", "sintomas"]
+        fields = ["id", "source_id", "nome", "tipo", "agente_etiologico", "fase_comum", "sintomas_texto", "sintomas"]
 
 
 class VariavelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variavel
-        fields = ["id", "nome", "descricao"]
+        fields = ["id", "nome", "descricao", "opcoes"]
 
 
 class FarmacoSerializer(serializers.ModelSerializer):
@@ -43,3 +43,23 @@ class FarmacoSerializer(serializers.ModelSerializer):
             "precaucoes",
             "doencas_relacionadas",
         ]
+
+
+class VacinaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacina
+        fields = "__all__"
+
+
+class CasoClinicoSerializer(serializers.ModelSerializer):
+    doenca = DoencaSerializer(read_only=True)
+
+    class Meta:
+        model = CasoClinico
+        fields = ["id", "numero", "doenca", "sintomas", "variaveis"]
+
+
+class GeracaoDatasetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GeracaoDataset
+        fields = ["id", "total_registros", "semente", "arquivo", "resumo", "created_at"]
