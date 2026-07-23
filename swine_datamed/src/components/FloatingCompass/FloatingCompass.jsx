@@ -7,7 +7,7 @@ import doencasCsv from "../../../base_data/doencas.csv?raw"
 import farmacosCsv from "../../../base_data/farmacos.csv?raw"
 import "./FloatingCompass.css"
 
-const hiddenRoutes = new Set(["/login", "/cadastro"])
+const hiddenRoutes = new Set(["/login", "/cadastro", "/recuperar-senha"])
 const emptyValues = new Set(["", "—", "-", "completar"])
 
 function parseCsv(text) {

@@ -10,6 +10,15 @@ const initialMessage = {
   text: "Olá, eu sou o Swine DataMed. Descreva os sintomas, fase produtiva, idade, temperatura e evolução do caso para eu organizar uma triagem assistida.",
 }
 
+function createPendingMessage() {
+  return {
+    id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    role: "assistant",
+    text: "Pensando...",
+    pending: true,
+  }
+}
+
 function createChat(title = "Nova triagem") {
   const now = new Date().toISOString()
   return {
@@ -82,13 +91,14 @@ function Chat() {
     const content = text.trim()
     const chatId = activeChat?.id
     if (!content || !chatId) return
+    const pendingMessage = createPendingMessage()
 
     updateActiveChat((chat) => {
       const shouldRename = chat.title === "Nova triagem" && chat.messages.length === 1
       return {
         ...chat,
         title: shouldRename ? titleFromMessage(content) : chat.title,
-        messages: [...chat.messages, { role: "user", text: content }],
+        messages: [...chat.messages, { role: "user", text: content }, pendingMessage],
       }
     })
     setInput("")
@@ -100,7 +110,11 @@ function Chat() {
             ? {
                 ...chat,
                 updatedAt: new Date().toISOString(),
-                messages: [...chat.messages, { role: "assistant", text: makeReply(content, data) }],
+                messages: chat.messages.map((message) =>
+                  message.id === pendingMessage.id
+                    ? { role: "assistant", text: makeReply(content, data) }
+                    : message
+                ),
               }
             : chat
         )
@@ -308,7 +322,10 @@ function Chat() {
 
           <div className="chat-messages" ref={messagesRef}>
             {messages.map((message, index) => (
-              <article className={`chat-message chat-message--${message.role}`} key={`${message.role}-${index}`}>
+              <article
+                className={`chat-message chat-message--${message.role} ${message.pending ? "chat-message--pending" : ""}`}
+                key={message.id || `${message.role}-${index}`}
+              >
                 <span className="chat-avatar">
                   {message.role === "assistant" ? <Bot size={20} /> : <UserRound size={20} />}
                 </span>

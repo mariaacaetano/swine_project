@@ -16,11 +16,30 @@ class Pig(models.Model):
         ("obito", "Obito"),
     ]
 
+    LIFE_STAGE_CHOICES = [
+        ("leitao", "Leitao"),
+        ("creche", "Creche"),
+        ("crescimento", "Crescimento"),
+        ("terminacao", "Terminacao"),
+        ("matriz", "Matriz"),
+        ("reprodutor", "Reprodutor"),
+    ]
+
+    SIZE_CHOICES = [
+        ("pequeno", "Pequeno"),
+        ("medio", "Medio"),
+        ("grande", "Grande"),
+    ]
+
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="pigs")
     name = models.CharField(max_length=120)
     tag = models.CharField(max_length=80, blank=True)
     breed = models.CharField(max_length=120, blank=True)
     sex = models.CharField(max_length=10, choices=SEX_CHOICES, blank=True)
+    life_stage = models.CharField(max_length=30, choices=LIFE_STAGE_CHOICES, blank=True)
+    size_category = models.CharField(max_length=20, choices=SIZE_CHOICES, blank=True)
+    pen = models.CharField(max_length=120, blank=True)
+    origin = models.CharField(max_length=160, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     weight_kg = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="ativo")

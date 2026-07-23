@@ -1,30 +1,38 @@
-import './Erro404.css'
+import { ArrowLeft, Home, SearchX } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
+import "./Erro404.css"
 
 export default function Error404() {
-  return (
-    <div className="error-container">
-      <div className="error-card">
-        <div className="error-text">
-          <h1>404</h1>
-          <h2>Oinc! Página não encontrada</h2>
-          <p>
-            Parece que essa página sumiu... talvez o porquinho tenha levado 🐷
-          </p>
+  const navigate = useNavigate()
 
-          <div className="buttons">
-            <button className="btn-secondary" onClick={() => window.history.back()}>
+  return (
+    <main className="error-page">
+      <section className="error-shell">
+        <div className="error-copy">
+          <span className="error-kicker">Erro 404</span>
+          <h1>Página não encontrada</h1>
+          <p>O endereço acessado não existe ou foi movido. Volte para uma área conhecida da plataforma para continuar.</p>
+
+          <div className="error-actions">
+            <button type="button" className="error-secondary" onClick={() => navigate(-1)}>
+              <ArrowLeft size={18} strokeWidth={1.8} />
               Voltar
             </button>
-            <button className="btn-primary" onClick={() => (window.location.href = "/")}>
-              Home
-            </button>
+            <Link to="/" className="error-primary">
+              <Home size={18} strokeWidth={1.8} />
+              Início
+            </Link>
           </div>
         </div>
 
-        <div className="error-image">
-          <img src="/swine_pinterest/pig_error.jpg" alt="Porquinho" />
+        <div className="error-visual" aria-hidden="true">
+          <img src="/swine_pinterest/pig_error.jpg" alt="" />
+          <div>
+            <SearchX size={34} strokeWidth={1.6} />
+            <strong>404</strong>
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      </section>
+    </main>
+  )
 }
