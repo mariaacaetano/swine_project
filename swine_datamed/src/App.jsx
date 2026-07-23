@@ -8,6 +8,7 @@ import FloatingCompass from './components/FloatingCompass/FloatingCompass.jsx'
 import Home from "./pages/Home/Home.jsx"
 import Login from "./pages/Login/Login.jsx"
 import Cadastro from "./pages/Cadastro/Cadastro.jsx"
+import RecuperarSenha from "./pages/RecuperarSenha/RecuperarSenha.jsx"
 import Perfil from "./pages/Perfil/Perfil.jsx"
 import Suinos from "./pages/Suinos/Suinos.jsx"
 import Bulario from "./pages/Bulario/Bulario.jsx"
@@ -84,8 +85,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/recuperar-senha" element={<RecuperarSenha />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/suinos" element={<Suinos />} />
+          <Route path="/suinos/:pigId" element={<Suinos />} />
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/bulario" element={<Bulario />} />
           <Route path="/bulario/:slug" element={<Bulario />} />

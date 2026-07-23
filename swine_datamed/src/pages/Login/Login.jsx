@@ -123,7 +123,7 @@ function Login() {
             />
           </label>
 
-          <a href="#" className="login-forgot reveal">Esqueceu a senha?</a>
+          <Link to="/recuperar-senha" className="login-forgot reveal">Esqueceu a senha?</Link>
 
           {message && <p className="login-message reveal">{message}</p>}
 

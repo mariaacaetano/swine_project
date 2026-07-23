@@ -91,6 +91,20 @@ export async function registerUser(payload) {
   return authData
 }
 
+export async function requestPasswordReset(payload) {
+  return requestJson("/auth/password-reset/request/", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  })
+}
+
+export async function confirmPasswordReset(payload) {
+  return requestJson("/auth/password-reset/confirm/", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  })
+}
+
 export async function getCurrentUser() {
   return requestJson("/auth/me/", {
     headers: {

@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction
+from django.utils import timezone
 from rest_framework import serializers
 
-from .models import UserProfile
+from .models import PasswordResetCode, UserProfile
 
 User = get_user_model()
 
@@ -114,6 +115,53 @@ class LoginSerializer(serializers.Serializer):
 
         attrs["user"] = authenticated_user
         return attrs
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        return value.strip().lower()
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(max_length=6, min_length=6)
+    password = serializers.CharField(write_only=True, min_length=8)
+    password_confirm = serializers.CharField(write_only=True)
+
+    def validate_email(self, value):
+        return value.strip().lower()
+
+    def validate_code(self, value):
+        code = value.strip()
+        if not code.isdigit():
+            raise serializers.ValidationError("Informe o codigo de 6 digitos.")
+        return code
+
+    def validate(self, attrs):
+        if attrs["password"] != attrs["password_confirm"]:
+            raise serializers.ValidationError({"password_confirm": "As senhas nao conferem."})
+
+        user = User.objects.filter(email__iexact=attrs["email"], is_active=True).first()
+        if not user:
+            raise serializers.ValidationError("Codigo invalido ou expirado.")
+
+        validate_password(attrs["password"], user=user)
+
+        reset_codes = PasswordResetCode.objects.filter(
+            user=user,
+            used_at__isnull=True,
+            expires_at__gt=timezone.now(),
+        ).order_by("-created_at")
+
+        for reset_code in reset_codes:
+            if reset_code.is_available and self.context["check_code"](attrs["code"], reset_code.code_hash):
+                attrs["user"] = user
+                attrs["reset_code"] = reset_code
+                return attrs
+
+        raise serializers.ValidationError("Codigo invalido ou expirado.")
 
 
 class UpdateUserSerializer(serializers.Serializer):

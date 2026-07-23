@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
+from .models import PasswordResetCode
 
 User = get_user_model()
 
@@ -82,3 +85,70 @@ class AuthApiTests(APITestCase):
         self.assertEqual(user.profile.user_type, "padrao")
         self.assertEqual(user.profile.institution, "IFC")
         self.assertTrue(user.profile.photo.name.startswith("profiles/"))
+
+    def test_password_reset_sends_code_to_existing_user(self):
+        User.objects.create_user(
+            username="recuperar@example.com",
+            email="recuperar@example.com",
+            password="SenhaForte123!",
+        )
+
+        response = self.client.post(
+            reverse("password-reset-request"),
+            {"email": "recuperar@example.com"},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(PasswordResetCode.objects.count(), 1)
+        self.assertIn("codigo de recuperacao", mail.outbox[0].subject.lower())
+
+    def test_password_reset_changes_password_with_valid_code(self):
+        user = User.objects.create_user(
+            username="trocar@example.com",
+            email="trocar@example.com",
+            password="SenhaForte123!",
+        )
+        self.client.post(
+            reverse("password-reset-request"),
+            {"email": "trocar@example.com"},
+            format="json",
+        )
+        code = "".join(character for character in mail.outbox[0].body if character.isdigit())[:6]
+
+        response = self.client.post(
+            reverse("password-reset-confirm"),
+            {
+                "email": "trocar@example.com",
+                "code": code,
+                "password": "NovaSenha123!",
+                "password_confirm": "NovaSenha123!",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        user.refresh_from_db()
+        self.assertTrue(user.check_password("NovaSenha123!"))
+        self.assertFalse(PasswordResetCode.objects.filter(user=user, used_at__isnull=True).exists())
+
+    def test_password_reset_rejects_invalid_code(self):
+        User.objects.create_user(
+            username="codigo@example.com",
+            email="codigo@example.com",
+            password="SenhaForte123!",
+        )
+
+        response = self.client.post(
+            reverse("password-reset-confirm"),
+            {
+                "email": "codigo@example.com",
+                "code": "000000",
+                "password": "NovaSenha123!",
+                "password_confirm": "NovaSenha123!",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
